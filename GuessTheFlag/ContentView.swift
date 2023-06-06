@@ -73,21 +73,30 @@ struct ContentView: View {
             }
             .padding()
         }
-        .alert(scoreTitle, isPresented: $showingScore) {
-            Button("Continue", action: askQuestion)
-        } message: {
-            if isRight {
-                Text("Your answer is correct! Your new score is \(scoreCount)")
+        .alert(flagsCount == 8 ? "Game over!" : scoreTitle, isPresented: $showingScore) {
+            if flagsCount == 8 {
+                Button("Restart", action: restartGame)
             } else {
-                Text("Your answer is Wrong! That's the flag of \(wrongCountry). Your new score is \(scoreCount)")
+                Button("Continue", action: askQuestion)
             }
+        } message: {
+            if flagsCount == 8 {
+                Text("Your final score is \(scoreCount). Click the button below to play again!")
+            } else {
+                if isRight {
+                    Text("Your answer is correct! Your new score is \(scoreCount)")
+                } else {
+                    Text("Your answer is Wrong! That's the flag of \(wrongCountry). Your new score is \(scoreCount)")
+                }
+            }
+            
         }
         
-        .alert("Game over!", isPresented: $showingRestart) {
-            Button("Restart", action: restartGame)
-        } message: {
-            Text("Your final score is \(scoreCount). Click the button below to play again!")
-        }
+//        .alert("Game over!", isPresented: $showingRestart) {
+//            Button("Restart", action: restartGame)
+//        } message: {
+//            Text("Your final score is \(scoreCount). Click the button below to play again!")
+//        }
     }
     
     func flagTapped(_ number: Int) {
@@ -114,9 +123,7 @@ struct ContentView: View {
         }
         
         if flagsCount == 8 {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                showingRestart = true
-            }
+            showingRestart = true
         }
     }
     
