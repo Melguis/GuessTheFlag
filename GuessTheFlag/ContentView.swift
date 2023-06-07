@@ -7,6 +7,26 @@
 
 import SwiftUI
 
+struct FlagModifier: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+//            .renderingMode(.none)
+            .clipShape(Capsule())
+            .shadow(radius: 5)
+    }
+}
+
+struct FlagImage: View {
+    let countriesFlag: String
+    
+    var body: some View {
+        VStack {
+            Image(countriesFlag)
+                .modifier(FlagModifier())
+        }
+    }
+}
+
 struct ContentView: View {
     @State private var showingScore = false
     @State private var showingRestart = false
@@ -50,10 +70,11 @@ struct ContentView: View {
                         Button {
                             flagTapped(number)
                         } label: {
-                            Image(countries[number])
-                                .renderingMode(.original)
-                                .clipShape(Capsule())
-                                .shadow(radius: 5)
+                            FlagImage(countriesFlag: countries[number])
+//                            Image(countries[number])
+//                                .renderingMode(.original)
+//                                .clipShape(Capsule())
+//                                .shadow(radius: 5)
                         }
                     }
                 }
